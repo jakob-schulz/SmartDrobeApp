@@ -117,20 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   
-  // "Im Browser ausprobieren" Button
-  const tryBrowserBtn = document.getElementById('tryBrowserBtn');
-  console.log('Try Browser Button:', tryBrowserBtn);
-  
-  if (tryBrowserBtn) {
-    tryBrowserBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      console.log('Button geklickt!');
-      window.location.href = getPath('/?mode=app');
-    });
-  } else {
-    console.error('tryBrowserBtn nicht gefunden!');
-  }
-  
   // Card Click Events (optional)
   document.addEventListener('click', (e) => {
     const card = e.target.closest('.card');

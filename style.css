@@ -110,18 +110,6 @@ button:active {
   display: none;
 }
 
-.try-browser-btn {
-  background: transparent;
-  color: #317EFB;
-  border: 2px solid #317EFB;
-  box-shadow: none;
-}
-
-.try-browser-btn:hover {
-  background: #317EFB;
-  color: white;
-}
-
 /* ===== APP VIEW ===== */
 #app {
   display: none;
