@@ -5,60 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#317EFB">
   
-  <title>PWA Demo</title>
+  <title>SmartDrobe App</title>
   
   <link rel="manifest" href="./manifest.json">
-  <link rel="icon" href="/icons/ios/180.png">
-  <link rel="apple-touch-icon" href="/icons/ios/180.png">
-  <script src="./config.js"></script>
+  <link rel="icon" href="./icons/ios/180.png">
+  <link rel="apple-touch-icon" href="./icons/ios/180.png">
   
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./config.js"></script>
 </head>
 <body>
 
   <!-- Landing-Seite (nur im Browser) -->
   <div id="landing">
     <div class="landing-container">
-      <h1>🚀 Willkommen bei PWA Demo</h1>
+      <h1>🚀 Willkommen bei SmartDrobe</h1>
       <p class="subtitle">Installiere unsere App für das beste Erlebnis</p>
       
       <div class="features">
         <div class="feature">
-          <span class="icon">⚡</span>
+          <div class="feature-icon">⚡</div>
           <h3>Blitzschnell</h3>
           <p>Lädt sofort, auch offline</p>
         </div>
         <div class="feature">
-          <span class="icon">📱</span>
+          <div class="feature-icon">📱</div>
           <h3>Native Experience</h3>
           <p>Fühlt sich an wie eine echte App</p>
         </div>
         <div class="feature">
-          <span class="icon">🔒</span>
+          <div class="feature-icon">🔒</div>
           <h3>Sicher</h3>
           <p>HTTPS und moderne Standards</p>
         </div>
       </div>
 
-      <button id="installBtn" class="install-button" hidden>
+      <button id="installBtn" hidden>
         📥 App installieren
       </button>
 
-      <p class="hint">
+      <div id="iosHint" class="ios-hint">
         <strong>iOS-Nutzer:</strong> Tippe auf 
-        <span class="ios-share-icon">⎙</span> und dann auf "Zum Home-Bildschirm"
-      </p>
+        ⎙ und dann auf "Zum Home-Bildschirm"
+      </div>
 
-      <button id="tryInBrowserBtn" class="secondary-button">
+      <button id="tryBrowserBtn" class="try-browser-btn">
         🌐 Im Browser ausprobieren
       </button>
     </div>
   </div>
 
   <!-- App-Ansicht (nach Installation oder im App-Modus) -->
-  <div id="app" style="display: none;">
+  <div id="app">
     <header class="app-header">
-      <h1>PWA Demo App</h1>
+      <h1>SmartDrobe App</h1>
     </header>
     
     <main class="app-content">
@@ -67,26 +67,29 @@
         <p>Du nutzt jetzt die installierte Version.</p>
       </div>
 
-      <div class="app-features">
-        <div class="app-card">
-          <h3>📊 Dashboard</h3>
+      <div class="app-cards">
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3>Dashboard</h3>
           <p>Hier könnte dein Dashboard sein</p>
         </div>
         
-        <div class="app-card">
-          <h3>⚙️ Einstellungen</h3>
+        <div class="card">
+          <div class="card-icon">⚙️</div>
+          <h3>Einstellungen</h3>
           <p>Konfiguriere deine App</p>
         </div>
         
-        <div class="app-card">
-          <h3>📈 Statistiken</h3>
+        <div class="card">
+          <div class="card-icon">📈</div>
+          <h3>Statistiken</h3>
           <p>Verfolge deinen Fortschritt</p>
         </div>
       </div>
 
-      <div class="status-info">
-        <p><strong>Status:</strong> <span id="onlineStatus">Online</span></p>
-        <p><strong>Modus:</strong> <span id="displayMode">Wird geladen...</span></p>
+      <div class="status-bar">
+        <p><strong>Status:</strong> <span id="statusDisplay">Online</span></p>
+        <p><strong>Modus:</strong> <span id="modeDisplay">Wird geladen...</span></p>
       </div>
     </main>
   </div>
