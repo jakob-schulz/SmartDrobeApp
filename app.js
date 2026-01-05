@@ -1,6 +1,7 @@
-// Service Worker registrieren
+// Service Worker registrieren (mit BASE_PATH aus config.js)
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js")
+  const swPath = getPath("/service-worker.js");
+  navigator.serviceWorker.register(swPath, { scope: BASE_PATH + "/" })
     .then(reg => console.log("Service Worker registriert", reg))
     .catch(err => console.error("Service Worker Fehler", err));
 }
@@ -8,7 +9,7 @@ if ("serviceWorker" in navigator) {
 // Prüfen ob App im Standalone-Modus läuft
 function isStandalone() {
   return window.matchMedia('(display-mode: standalone)').matches
-         || window.navigator.standalone === true; // iOS
+         || window.navigator.standalone === true;
 }
 
 // Prüfen ob App-Modus angezeigt werden soll
@@ -27,7 +28,6 @@ function switchView() {
     landing.style.display = 'none';
     app.style.display = 'block';
     
-    // Modus anzeigen
     if (modeDisplay) {
       if (isStandalone()) {
         modeDisplay.textContent = 'Installierte App (Standalone)';
@@ -55,39 +55,24 @@ function updateOnlineStatus() {
 
 // Install Prompt
 let deferredPrompt;
-const installBtn = document.getElementById("installBtn");
-const iosHint = document.getElementById("iosHint");
 
-// beforeinstallprompt Event (Android/Desktop Chrome)
 window.addEventListener("beforeinstallprompt", e => {
   e.preventDefault();
   deferredPrompt = e;
   
+  const installBtn = document.getElementById("installBtn");
   if (installBtn) {
     installBtn.hidden = false;
   }
 });
 
-// Install Button Click
-if (installBtn) {
-  installBtn.addEventListener("click", async () => {
-    if (!deferredPrompt) {
-      return;
-    }
-    
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log(`Installation: ${outcome}`);
-    
-    deferredPrompt = null;
-    installBtn.hidden = true;
-  });
-}
-
-// iOS Detection und Hinweis anzeigen
+// iOS Detection
 function checkIOS() {
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const isInStandaloneMode = window.navigator.standalone === true;
+  
+  const iosHint = document.getElementById("iosHint");
+  const installBtn = document.getElementById("installBtn");
   
   if (isIOS && !isInStandaloneMode && iosHint) {
     iosHint.style.display = 'block';
@@ -100,35 +85,60 @@ function checkIOS() {
 // App installed Event
 window.addEventListener('appinstalled', () => {
   console.log('PWA wurde installiert');
-  
-  // Optional: Direkt zur App-Ansicht wechseln
   if (!location.search.includes('mode=app')) {
-    location.assign('/?mode=app');
-  }
-});
-
-// "Im Browser ausprobieren" Button
-const tryBrowserBtn = document.getElementById('tryBrowserBtn');
-if (tryBrowserBtn) {
-  tryBrowserBtn.addEventListener('click', () => {
-    location.assign('/?mode=app');
-  });
-}
-
-// Card Click Events (optional)
-document.addEventListener('click', (e) => {
-  const card = e.target.closest('.card');
-  if (card) {
-    const cardTitle = card.querySelector('h3').textContent;
-    alert(`Du hast auf "${cardTitle}" geklickt!`);
+    window.location.href = getPath('/?mode=app');
   }
 });
 
 // Initialisierung
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOM geladen');
+  
+  // Ansicht umschalten
   switchView();
   checkIOS();
   updateOnlineStatus();
+  
+  // Install Button
+  const installBtn = document.getElementById("installBtn");
+  if (installBtn) {
+    installBtn.addEventListener("click", async () => {
+      if (!deferredPrompt) {
+        console.log('Kein deferredPrompt verfügbar');
+        return;
+      }
+      
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`Installation: ${outcome}`);
+      
+      deferredPrompt = null;
+      installBtn.hidden = true;
+    });
+  }
+  
+  // "Im Browser ausprobieren" Button
+  const tryBrowserBtn = document.getElementById('tryBrowserBtn');
+  console.log('Try Browser Button:', tryBrowserBtn);
+  
+  if (tryBrowserBtn) {
+    tryBrowserBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('Button geklickt!');
+      window.location.href = getPath('/?mode=app');
+    });
+  } else {
+    console.error('tryBrowserBtn nicht gefunden!');
+  }
+  
+  // Card Click Events (optional)
+  document.addEventListener('click', (e) => {
+    const card = e.target.closest('.card');
+    if (card) {
+      const cardTitle = card.querySelector('h3').textContent;
+      alert(`Du hast auf "${cardTitle}" geklickt!`);
+    }
+  });
   
   // Online/Offline Events
   window.addEventListener('online', updateOnlineStatus);

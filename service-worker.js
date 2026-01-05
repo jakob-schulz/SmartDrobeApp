@@ -1,12 +1,17 @@
-const CACHE_NAME = "pwa-demo-v2";
+// Automatische Erkennung: lokal oder GitHub Pages
+const isLocal = self.location.hostname === 'localhost' || self.location.hostname === '127.0.0.1';
+const BASE_PATH = isLocal ? '' : '/SmartDrobeApp';
+
+const CACHE_NAME = "smartdrobe-v1";
 const FILES_TO_CACHE = [
-  "/",
-  "/index.html",
-  "/style.css",
-  "/app.js",
-  "/icons/android/android-launchericon-192-192.png",
-  "/icons/android/android-launchericon-512-512.png",
-  "/icons/ios/180.png"
+  BASE_PATH + "/",
+  BASE_PATH + "/index.html",
+  BASE_PATH + "/style.css",
+  BASE_PATH + "/app.js",
+  BASE_PATH + "/config.js",
+  BASE_PATH + "/icons/android/android-launchericon-192-192.png",
+  BASE_PATH + "/icons/android/android-launchericon-512-512.png",
+  BASE_PATH + "/icons/ios/180.png"
 ];
 
 // Install Event
@@ -22,7 +27,7 @@ self.addEventListener("install", event => {
   );
 });
 
-// Activate Event - Alte Caches löschen
+// Activate Event
 self.addEventListener("activate", event => {
   console.log("[SW] Activate");
   event.waitUntil(
@@ -39,30 +44,28 @@ self.addEventListener("activate", event => {
   );
 });
 
-// Fetch Event - Network First für manifest.json, Cache First für den Rest
+// Fetch Event
 self.addEventListener("fetch", event => {
   const url = new URL(event.request.url);
   
-  // Network First für manifest.json (damit Updates ankommen)
-  if (url.pathname === "/manifest.json") {
+  // Network First für manifest.json
+  if (url.pathname.endsWith("/manifest.json")) {
     event.respondWith(
       fetch(event.request)
         .then(response => {
-          // Erfolgreiche Antwort cachen
           return caches.open(CACHE_NAME).then(cache => {
             cache.put(event.request, response.clone());
             return response;
           });
         })
         .catch(() => {
-          // Fallback auf Cache bei Netzwerkfehler
           return caches.match(event.request);
         })
     );
     return;
   }
   
-  // Cache First für alle anderen Requests
+  // Cache First für den Rest
   event.respondWith(
     caches.match(event.request)
       .then(response => {
@@ -70,14 +73,11 @@ self.addEventListener("fetch", event => {
           return response;
         }
         
-        // Nicht im Cache, vom Netzwerk holen
         return fetch(event.request).then(response => {
-          // Nur erfolgreiche Antworten cachen
           if (!response || response.status !== 200 || response.type === 'error') {
             return response;
           }
           
-          // Response klonen und cachen
           const responseToCache = response.clone();
           caches.open(CACHE_NAME).then(cache => {
             cache.put(event.request, responseToCache);
@@ -87,7 +87,6 @@ self.addEventListener("fetch", event => {
         });
       })
       .catch(() => {
-        // Offline-Fallback (optional: eigene Offline-Seite)
         console.log("[SW] Fetch fehlgeschlagen, offline");
       })
   );

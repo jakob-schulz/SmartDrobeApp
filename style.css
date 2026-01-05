@@ -221,10 +221,12 @@ button:active {
 
 .online {
   color: #28a745;
+  font-weight: bold;
 }
 
 .offline {
   color: #dc3545;
+  font-weight: bold;
 }
 
 /* ===== RESPONSIVE ===== */
@@ -254,9 +256,55 @@ button:active {
     width: 100%;
     margin: 0.5rem 0;
   }
+
+  .app-content {
+    padding: 1rem;
+  }
+
+  .welcome-card {
+    padding: 1.5rem;
+  }
+
+  .welcome-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
 }
 
 /* ===== UTILITIES ===== */
 .hidden {
   display: none !important;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.landing-container,
+.welcome-card,
+.card {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.card:nth-child(3) {
+  animation-delay: 0.3s;
 }
