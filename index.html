@@ -1,23 +1,96 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#317EFB">
+  
   <title>PWA Demo</title>
-
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#317EFB" />
-
-  <link rel="stylesheet" href="style.css" />
+  
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icons/ios/180.png">
+  <link rel="apple-touch-icon" href="/icons/ios/180.png">
+  
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>🚀 Meine PWA Demo</h1>
-  <p>Diese App läuft offline und kann installiert werden.</p>
 
-  <button id="installBtn" hidden>App installieren</button>
+  <!-- Landing-Seite (nur im Browser) -->
+  <div id="landing">
+    <div class="landing-container">
+      <h1>🚀 Willkommen bei PWA Demo</h1>
+      <p class="subtitle">Installiere unsere App für das beste Erlebnis</p>
+      
+      <div class="features">
+        <div class="feature">
+          <span class="icon">⚡</span>
+          <h3>Blitzschnell</h3>
+          <p>Lädt sofort, auch offline</p>
+        </div>
+        <div class="feature">
+          <span class="icon">📱</span>
+          <h3>Native Experience</h3>
+          <p>Fühlt sich an wie eine echte App</p>
+        </div>
+        <div class="feature">
+          <span class="icon">🔒</span>
+          <h3>Sicher</h3>
+          <p>HTTPS und moderne Standards</p>
+        </div>
+      </div>
 
-  <script src="app.js"></script>
+      <button id="installBtn" class="install-button" hidden>
+        📥 App installieren
+      </button>
+
+      <p class="hint">
+        <strong>iOS-Nutzer:</strong> Tippe auf 
+        <span class="ios-share-icon">⎙</span> und dann auf "Zum Home-Bildschirm"
+      </p>
+
+      <button id="tryInBrowserBtn" class="secondary-button">
+        🌐 Im Browser ausprobieren
+      </button>
+    </div>
+  </div>
+
+  <!-- App-Ansicht (nach Installation oder im App-Modus) -->
+  <div id="app" style="display: none;">
+    <header class="app-header">
+      <h1>PWA Demo App</h1>
+    </header>
+    
+    <main class="app-content">
+      <div class="welcome-card">
+        <h2>✨ Willkommen in der App!</h2>
+        <p>Du nutzt jetzt die installierte Version.</p>
+      </div>
+
+      <div class="app-features">
+        <div class="app-card">
+          <h3>📊 Dashboard</h3>
+          <p>Hier könnte dein Dashboard sein</p>
+        </div>
+        
+        <div class="app-card">
+          <h3>⚙️ Einstellungen</h3>
+          <p>Konfiguriere deine App</p>
+        </div>
+        
+        <div class="app-card">
+          <h3>📈 Statistiken</h3>
+          <p>Verfolge deinen Fortschritt</p>
+        </div>
+      </div>
+
+      <div class="status-info">
+        <p><strong>Status:</strong> <span id="onlineStatus">Online</span></p>
+        <p><strong>Modus:</strong> <span id="displayMode">Wird geladen...</span></p>
+      </div>
+    </main>
+  </div>
+
+  <script src="/app.js"></script>
+
 </body>
 </html>

@@ -1,7 +1,7 @@
 {
     "name": "SmartDrobe App",
     "short_name": "SmartDrobe",
-    "start_url": ".",
+    "start_url": "/?mode=app",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#317EFB",
